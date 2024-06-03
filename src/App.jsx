@@ -1,13 +1,19 @@
+import { useState } from "react";
 import Header from "./components/Header/Header";
-import { CORE_CONCEPTS } from "./data";
+import { EXAMPLES, CORE_CONCEPTS } from "./data";
 import CoreConcept from "./components/CoreConcept";
 import TabButton from "./components/TabButton";
 
 function App() {
+  const [selectedTopic, setSelectedTopic] = useState();
+
   const handleSelect = (selectedButton) => {
     // selectedButton ["components", "jsx", "props", "state"]
     console.log("Handling select from the app component", selectedButton);
+    setSelectedTopic(selectedButton);
   };
+
+  console.log("This is to see if App component is refreshed");
 
   return (
     <div>
@@ -37,7 +43,18 @@ function App() {
             <TabButton onSelect={() => handleSelect("state")}>State</TabButton>
           </menu>
         </section>
-        Dynamic content here
+        
+        {!selectedTopic && <p>Please select a topic.</p>}
+
+        {selectedTopic && (
+          <div id="tab-content">
+            <h3>{EXAMPLES[selectedTopic].title}</h3>
+            <p>{EXAMPLES[selectedTopic].description}</p>
+            <pre>
+              <code>{EXAMPLES[selectedTopic].code}</code>
+            </pre>
+          </div>
+        )}
       </main>
     </div>
   );
